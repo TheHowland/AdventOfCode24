@@ -1,43 +1,26 @@
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include <algorithm>
-#include <bits/fs_dir.h>
 #include <eigen3/Eigen/Dense>
+#include <algorithm>
 
-void read_txt(Eigen::Matrix<int, Eigen::Dynamic, 1>* vec1, Eigen::Matrix<int, Eigen::Dynamic, 1>* vec2) {
-    int a ,b;
-    unsigned int len = 1;
-    while ((std::cin >> a >> b)) {
-        vec1->resize(len);
-        vec1[len] << a;
-        vec2[len] << b;
-        len++;
+void read_file(std::vector<int>* list1, std::vector<int>* list2) {
+    int a,b;
+    while(std::cin >> a >> b) {
+        list1->push_back(a);
+        list2->push_back(b);
     }
 }
 
-unsigned int calc_distance(Eigen::Matrix<int, Eigen::Dynamic, 1>* vec1, Eigen::Matrix<int, Eigen::Dynamic, 1>* vec2) {
-    std::ranges::sort(std::begin(*vec1), std::end(*vec1), std::less<int>());
-    std::ranges::sort(std::begin(*vec1), std::end(*vec1), std::less<int>());
-
-    unsigned int dist_sum = 0;
-    Eigen::Matrix<int, Eigen::Dynamic, 1> sum_vec;
-    sum_vec.resize(vec1->rows());
-    sum_vec = vec1 - vec2;
-
-    return dist_sum;
-}
-
-
 int main() {
-    Eigen::Matrix<int, Eigen::Dynamic, 1> vec1;
-    Eigen::Matrix<int, Eigen::Dynamic, 1> vec2;
+    std::vector<int> list1;
+    std::vector<int> list2;
+    read_file(&list1, &list2);
 
-    read_txt(&vec1, &vec2);
+    std::ranges::sort(list1);
+    std::ranges::sort(list2);
 
-    const unsigned int dist_sum = calc_distance(&vec1, &vec2);
-    std::cout << dist_sum << std::endl;
+    const Eigen::VectorXi vec1 = Eigen::VectorXi::Map(list1.data(), list1.size());
+    const Eigen::VectorXi vec2 = Eigen::VectorXi::Map(list2.data(), list2.size());
 
-
-    return 0;
+    const unsigned int sum = (vec1 - vec2).cwiseAbs().colwise().sum()(0);
+    std::cout << sum << std::endl;
 }
