@@ -1,0 +1,8 @@
+﻿.idea
+cmake-build-debug/.cmake
+cmake-build-debug/CMakeFiles
+cmake-build-debug/Testing
+cmake-build-debug
+cmake-build-debug-wsl
+cmake-build-release
+cmake-build-release-wsl
