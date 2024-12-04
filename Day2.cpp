@@ -3,6 +3,12 @@
 #include <algorithm>
 #include <fstream>
 
+enum checkResult {
+    Valid = 0,
+    OneToValid = 1,
+    Invalid = 2
+};
+
 bool isDecending(std::vector<unsigned int>& v) {
     for (int i = 0; i < v.size() - 1; i++) {
         if (v[i] <= v[i + 1]) {
@@ -37,7 +43,7 @@ unsigned int validateSequence(std::vector<unsigned int>& v) {
     if (isDecending(v)) {
         return checkDist(v);
     }
-    return 1;
+    return Invalid;
 }
 
 unsigned int checkSequenceOptions(std::vector<unsigned int>& v) {
@@ -46,10 +52,10 @@ unsigned int checkSequenceOptions(std::vector<unsigned int>& v) {
         temp.erase(temp.begin() + i);
 
         if (!validateSequence(temp)) {
-            return 0;
+            return OneToValid;
         }
     }
-    return 1;
+    return Invalid;
 }
 
 void read_file(std::vector<unsigned int>* list) {
@@ -77,12 +83,16 @@ int main(void) {
     read_file(&list);
 
     unsigned int valid = list.size();
+    unsigned int oneToValid = 0;
     for (const unsigned int i : list) {
-        if (i != 0) {
+        if (i != Valid) {
             valid--;
+        }
+        if (i == OneToValid) {
+            oneToValid++;
         }
     }
 
-
-    std::cout << "finished" << std::endl;
+    std::cout << valid << std::endl;
+    std::cout << valid+oneToValid << std::endl;
 }
