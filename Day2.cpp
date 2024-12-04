@@ -1,6 +1,7 @@
 #include <iostream>
 #include <eigen3/Eigen/Dense>
 #include <algorithm>
+#include <fstream>
 
 void read_file(std::vector<int>* list) {
     int a,b,c,d,e;
@@ -28,6 +29,25 @@ int main(void) {
           all--;
       }
     }
-    int result = all-unsafe;
-    std::cout << result << std::endl;
+
+    // Open a file stream in write mode
+    std::string s = "outputDay2.txt";
+    std::ofstream file(s);
+
+    // Check if the file was opened successfully
+    if (!file.is_open()) {
+        std::cerr << "Failed to open the file: " << s << std::endl;
+        return 1;
+    }
+
+    // Write each element of the vector to the file, one per line
+    for (const int& value : list) {
+        file << value << '\n';
+    }
+
+    // Close the file
+    file.close();
+    std::cout << "Vector written to " << s << " successfully!" << std::endl;
+
+    std::cout << all << std::endl;
 }
